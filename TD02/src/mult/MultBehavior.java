@@ -39,9 +39,7 @@ public class MultBehavior extends CyclicBehaviour{
 					int result = 1;
 					for(Integer i : query.getNumbers()){
 						result = result * i;
-//						System.out.println("MULT " + i);
 					}
-//					System.out.println("MULT RESULT " + result);
 					calcResult = new CalcResult(result, CalcResult.OK);
 				}
 				else {
