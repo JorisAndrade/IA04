@@ -15,13 +15,13 @@ import models.CalcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SuppressWarnings("serial")
-public class HandleFactBehaviour extends Behaviour{
-	private int fact;
+public class HandleFactBehaviour extends Behaviour {
+	private final int fact;
 	private int step;
 	private int savedValue;
-	ObjectMapper mapper = new ObjectMapper();	
+	ObjectMapper mapper = new ObjectMapper();
 
-	public HandleFactBehaviour(int fact){
+	public HandleFactBehaviour(int fact) {
 		this.fact = fact;
 		step = 1;
 		savedValue = 1;
@@ -40,9 +40,9 @@ public class HandleFactBehaviour extends Behaviour{
 			mapper.writeValue(stringWriter, calcQuery);
 			String sendString = stringWriter.toString();
 			System.out.println(stringWriter.toString());
-			AID receiver = ((Fact)myAgent).getReceiver();
+			AID receiver = ((Fact) myAgent).getReceiver();
 			ACLMessage messageResponse = new ACLMessage(ACLMessage.REQUEST);
-			if(receiver != null) {
+			if (receiver != null) {
 				messageResponse.addReceiver(receiver);
 				messageResponse.setContent(sendString);
 				myAgent.send(messageResponse);
@@ -55,11 +55,12 @@ public class HandleFactBehaviour extends Behaviour{
 		}
 	}
 
+	@Override
 	public void onStart() {
 		sendMultiplication();
 	}
 
-
+	@Override
 	public int onEnd() {
 		System.out.println("Resultat " + savedValue);
 		// On remet les valeurs par defaut
@@ -68,24 +69,26 @@ public class HandleFactBehaviour extends Behaviour{
 
 	@Override
 	public void action() {
-		ACLMessage message = myAgent.receive(MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+		ACLMessage message = myAgent.receive(MessageTemplate
+				.MatchPerformative(ACLMessage.INFORM));
 		System.out.println("WAIT FOR MESSAGE");
 
-		if(message != null) {
+		if (message != null) {
 			System.out.println("RECEIVE MESSAGE");
 			String messageContent = message.getContent();
 			try {
-				CalcResult calcResult = mapper.readValue(messageContent, CalcResult.class);
+				CalcResult calcResult = mapper.readValue(messageContent,
+						CalcResult.class);
 				savedValue = calcResult.getResult();
 				step++;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			if (step <= fact) {
 				sendMultiplication();
 			}
-			
+
 		} else {
 			block();
 		}

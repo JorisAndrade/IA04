@@ -18,5 +18,5 @@ public class CalcQuery {
 	public void setNumbers(List<Integer> numbers) {
 		this.numbers = numbers;
 	}
-	
+
 }

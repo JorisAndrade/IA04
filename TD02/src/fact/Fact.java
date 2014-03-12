@@ -20,19 +20,20 @@ public class Fact extends Agent {
 		DFAgentDescription[] result;
 		try {
 			result = DFService.search(this, template);
-			if(result.length>0){
+			if (result.length > 0) {
 				Random rand = new Random();
-				return  result[rand.nextInt(result.length)].getName();
+				return result[rand.nextInt(result.length)].getName();
 			}
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
-	protected void setup(){
+
+	@Override
+	protected void setup() {
 		super.setup();
 		addBehaviour(new InitFactBehaviour());
 	}

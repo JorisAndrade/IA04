@@ -21,19 +21,19 @@ public class MultBehavior extends CyclicBehaviour{
 		ACLMessage message = myAgent.receive(MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
 		if (message != null) {
 			String messageContent = message.getContent();
-			ObjectMapper mapper = new ObjectMapper();	
+			ObjectMapper mapper = new ObjectMapper();
 			CalcQuery query = null;
 			CalcResult calcResult = null;
 			StringWriter stringWriter = new StringWriter();
-			
+
 			try {
 				query = mapper.readValue(messageContent, CalcQuery.class);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
+
 			if(query != null){
 				if(query.getAction().equals(CalcQuery.MULTIPLICATION)){
 					int result = 1;
@@ -43,13 +43,13 @@ public class MultBehavior extends CyclicBehaviour{
 					calcResult = new CalcResult(result, CalcResult.OK);
 				}
 				else {
-					calcResult = new CalcResult(0, CalcResult.ERROR);	
+					calcResult = new CalcResult(0, CalcResult.ERROR);
 				}
 			} else {
 				calcResult = new CalcResult(0, CalcResult.ERROR);
 			}
-			
-			
+
+
 			try {
 				mapper.writeValue(stringWriter, calcResult);
 				String sendString = stringWriter.toString();
@@ -61,8 +61,8 @@ public class MultBehavior extends CyclicBehaviour{
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
-				
+			}
+
 		} else {
 			block();
 		}

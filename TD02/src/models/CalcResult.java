@@ -13,7 +13,7 @@ public class CalcResult {
 		this.result = result;
 		this.comment = comment;
 	}
-	
+
 	public int getResult() {
 		return result;
 	}
