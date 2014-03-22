@@ -1,6 +1,7 @@
 package mult;
 
-import jade.core.behaviours.CyclicBehaviour;
+import jade.core.Agent;
+import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
@@ -11,14 +12,19 @@ import models.CalcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 @SuppressWarnings("serial")
-public class MultBehavior extends CyclicBehaviour{
+public class MultBehavior extends TickerBehaviour {
+
+	public MultBehavior(Agent a, long period) {
+		super(a, period);
+	}
 
 	ObjectMapper mapper = new ObjectMapper();
+
 	@Override
-	public void action() {
-		ACLMessage message = myAgent.receive(MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
+	public void onTick() {
+		ACLMessage message = myAgent.receive(MessageTemplate
+				.MatchPerformative(ACLMessage.REQUEST));
 		if (message != null) {
 			String messageContent = message.getContent();
 			ObjectMapper mapper = new ObjectMapper();
@@ -33,27 +39,24 @@ public class MultBehavior extends CyclicBehaviour{
 				e.printStackTrace();
 			}
 
-
-			if(query != null){
-				if(query.getAction().equals(CalcQuery.MULTIPLICATION)){
+			if (query != null) {
+				if (query.getAction().equals(CalcQuery.MULTIPLICATION)) {
 					int result = 1;
-					for(Integer i : query.getNumbers()){
+					for (Integer i : query.getNumbers()) {
 						result = result * i;
 					}
 					calcResult = new CalcResult(result, CalcResult.OK);
-				}
-				else {
+				} else {
 					calcResult = new CalcResult(0, CalcResult.ERROR);
 				}
 			} else {
 				calcResult = new CalcResult(0, CalcResult.ERROR);
 			}
 
-
 			try {
 				mapper.writeValue(stringWriter, calcResult);
 				String sendString = stringWriter.toString();
-//				System.out.println(sendString);
+				// System.out.println(sendString);
 				ACLMessage reply = message.createReply();
 				reply.setPerformative(ACLMessage.INFORM);
 				reply.setContent(sendString);

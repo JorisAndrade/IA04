@@ -19,12 +19,14 @@ public class HandleFactBehaviour extends Behaviour {
 	private final int fact;
 	private int step;
 	private int savedValue;
+	private final int conversationId;
 	ObjectMapper mapper = new ObjectMapper();
 
-	public HandleFactBehaviour(int fact) {
+	public HandleFactBehaviour(int fact, int conversationId) {
 		this.fact = fact;
 		step = 1;
 		savedValue = 1;
+		this.conversationId = conversationId;
 	}
 
 	public void sendMultiplication() {
@@ -44,6 +46,8 @@ public class HandleFactBehaviour extends Behaviour {
 			ACLMessage messageResponse = new ACLMessage(ACLMessage.REQUEST);
 			if (receiver != null) {
 				messageResponse.addReceiver(receiver);
+				messageResponse.setConversationId(String
+						.valueOf(conversationId));
 				messageResponse.setContent(sendString);
 				myAgent.send(messageResponse);
 			} else {
@@ -57,6 +61,7 @@ public class HandleFactBehaviour extends Behaviour {
 
 	@Override
 	public void onStart() {
+		System.out.println("ID: " + conversationId);
 		sendMultiplication();
 	}
 
@@ -69,10 +74,12 @@ public class HandleFactBehaviour extends Behaviour {
 
 	@Override
 	public void action() {
-		ACLMessage message = myAgent.receive(MessageTemplate
-				.MatchPerformative(ACLMessage.INFORM));
+		System.out.println("conversationID " + conversationId);
+		MessageTemplate template = MessageTemplate.and(MessageTemplate
+				.MatchPerformative(ACLMessage.INFORM), MessageTemplate
+				.MatchConversationId(String.valueOf(conversationId)));
+		ACLMessage message = myAgent.receive(template);
 		System.out.println("WAIT FOR MESSAGE");
-
 		if (message != null) {
 			System.out.println("RECEIVE MESSAGE");
 			String messageContent = message.getContent();

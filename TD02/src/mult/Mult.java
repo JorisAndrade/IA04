@@ -8,7 +8,8 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 
 @SuppressWarnings("serial")
 public class Mult extends Agent {
-	protected void setup(){
+	@Override
+	protected void setup() {
 		super.setup();
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
@@ -16,7 +17,7 @@ public class Mult extends Agent {
 		sd.setType("Operations");
 		sd.setName("Multiplication");
 		dfd.addServices(sd);
-		addBehaviour(new MultBehavior());
+		addBehaviour(new MultBehavior(this, 500));
 		try {
 			DFService.register(this, dfd);
 		} catch (FIPAException e) {
