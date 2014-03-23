@@ -17,7 +17,6 @@ import javax.swing.JTextField;
 
 import model.ChatMessage;
 import agents.ChatAgent;
-import agents.ReceiveBehaviour;
 
 @SuppressWarnings("serial")
 public class ChatFrame extends JFrame {
@@ -25,8 +24,8 @@ public class ChatFrame extends JFrame {
 	// composants
 	private final JList<ChatMessage> jList;
 	private final JTextField jTextField;
-	private ChatAgent chatAgent;
-	private JButton bouton;
+	private final ChatAgent chatAgent;
+	private final JButton bouton;
 	// choix de fichier
 	private final JFileChooser fc = new JFileChooser();
 
@@ -44,7 +43,8 @@ public class ChatFrame extends JFrame {
 		BoxLayout baseLayout = new BoxLayout(pane, BoxLayout.PAGE_AXIS);
 		pane.setLayout(baseLayout);
 		// initialisation de la liste
-		jList = new JList<ChatMessage>(chatAgent.getReceiveBehaviour().getListModel());
+		jList = new JList<ChatMessage>(chatAgent.getReceiveBehaviour()
+				.getListModel());
 		jList.setCellRenderer(new ListCell());
 		JScrollPane scrollPane = new JScrollPane(jList);
 		// textfield
@@ -53,10 +53,10 @@ public class ChatFrame extends JFrame {
 		panelText.setPreferredSize(new Dimension(500, 30));
 		panelText.setLayout(new BoxLayout(panelText, BoxLayout.LINE_AXIS));
 		panelText.add(jTextField);
-		//bouton d'envoie
+		// bouton d'envoie
 		bouton = new JButton("Envoyer");
 		panelText.add(bouton);
-		
+
 		// separateur
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				scrollPane, panelText);
@@ -65,10 +65,10 @@ public class ChatFrame extends JFrame {
 		setVisible(true);
 
 	}
-	
-	public void addListeners(){
+
+	public void addListeners() {
 		bouton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				chatAgent.sendMessage(jTextField.getText());
@@ -76,7 +76,7 @@ public class ChatFrame extends JFrame {
 			}
 		});
 	}
-	
+
 	public JList<ChatMessage> getjList() {
 		return jList;
 	}
@@ -84,6 +84,5 @@ public class ChatFrame extends JFrame {
 	public JTextField getjTextField() {
 		return jTextField;
 	}
-	
 
 }

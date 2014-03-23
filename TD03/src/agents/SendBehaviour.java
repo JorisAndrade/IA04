@@ -1,25 +1,24 @@
 package agents;
 
-import java.io.IOException;
-import java.io.StringWriter;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import model.ChatMessage;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
 
+import java.io.StringWriter;
+
+import model.ChatMessage;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @SuppressWarnings("serial")
-public class SendBehaviour extends OneShotBehaviour{
-	private String message;
+public class SendBehaviour extends OneShotBehaviour {
+	private final String message;
 	private final ObjectMapper mapper = new ObjectMapper();
-	public SendBehaviour(String message){
+
+	public SendBehaviour(String message) {
 		this.message = message;
 	}
-	
+
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub
@@ -32,10 +31,11 @@ public class SendBehaviour extends OneShotBehaviour{
 			e.printStackTrace();
 		}
 		String messageString = stringWriter.toString();
-		if(messageString!=null){
+		if (messageString != null) {
 			ACLMessage message = new ACLMessage(ACLMessage.INFORM);
 			message.setContent(messageString);
-			for(DFAgentDescription agentDesc : ((ChatAgent) myAgent).getReceivers()){				
+			for (DFAgentDescription agentDesc : ((ChatAgent) myAgent)
+					.getReceivers()) {
 				message.addReceiver(agentDesc.getName());
 			}
 			myAgent.send(message);
