@@ -19,7 +19,7 @@ public class ListCell extends JLabel implements ListCellRenderer<ChatMessage>{
 			JList<? extends ChatMessage> arg0, ChatMessage arg1, int arg2,
 			boolean arg3, boolean arg4) {
 		
-		this.setText(arg1.getMessage());
+		this.setText("[" + arg1.getAuteur() +  "] " + arg1.getMessage());
 		return this;
 	}
 }

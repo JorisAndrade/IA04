@@ -3,6 +3,17 @@ package model;
 public class ChatMessage {
 	private String auteur;
 	private String message;
+	
+	public ChatMessage(){
+		auteur = null;
+		message = null;
+	}
+	
+	public ChatMessage(String auteur, String message){
+		this.auteur = auteur;
+		this.message = message;
+	}
+	
 	public String getAuteur() {
 		return auteur;
 	}

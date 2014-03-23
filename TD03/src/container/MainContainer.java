@@ -18,11 +18,14 @@ public class MainContainer {
 		try {
 			p = new ProfileImpl(MAIN_PROPERTIES_FILE);
 			AgentContainer mc = rt.createMainContainer(p);
-			AgentController chatController = mc.createNewAgent("ChatAgent",
+			AgentController chatController = mc.createNewAgent("ChatAgent1",
 					"agents.ChatAgent", null);
 			chatController.start();
+			AgentController chatController2 = mc.createNewAgent("ChatAgent2",
+					"agents.ChatAgent", null);
+			chatController2.start();
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
 	}
 
