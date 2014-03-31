@@ -31,7 +31,6 @@ public class GiveCellsBehaviour extends CyclicBehaviour {
 						message.getContent(), RequestCellsMessage.class);
 				Cellule[] cellules = EnvironnementAgent.sudoku
 						.getCellulesForRank(requestMessage.getRank());
-				System.out.println("cellules recuperees" + cellules);
 				CellsMessage cellsMessage = new CellsMessage(cellules,
 						requestMessage.getRank());
 				StringWriter stringWriter = new StringWriter();
@@ -42,7 +41,6 @@ public class GiveCellsBehaviour extends CyclicBehaviour {
 					e.printStackTrace();
 				}
 				String messageString = stringWriter.toString();
-				System.out.println("message envoye: " + messageString);
 				if (messageString != null) {
 					ACLMessage response = new ACLMessage(ACLMessage.INFORM);
 					response.setContent(messageString);

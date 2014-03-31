@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -59,7 +60,7 @@ public class Cellule {
 		}
 	}
 
-	public synchronized void removeValsPossibles(ArrayList<Integer> vals) {
+	public synchronized void removeValsPossibles(List<Integer> vals) {
 		mValeursPossibles.removeAll(vals);
 	}
 
@@ -99,5 +100,18 @@ public class Cellule {
 	@Override
 	public String toString() {
 		return "Cellule [mValeur=" + mValeur + ", l=" + l + ", c=" + c + "]";
+	}
+	
+	public void merge(Cellule cellule){
+		if(cellule.numberOfPossible()==0){
+			this.setVal(cellule.getVal());
+		} else {
+			List<Integer> notPossible = new ArrayList<Integer>();
+			for(int i = 0; i<9; i++){
+				notPossible.add(i);
+			}
+			notPossible.removeAll(cellule.mValeursPossibles);
+			this.removeValsPossibles(notPossible);
+		}
 	}
 }

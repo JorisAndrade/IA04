@@ -89,5 +89,10 @@ public class Sudoku {
 		}
 		return true;
 	}
+	
+	public void setCellule(Cellule cellule){
+		Cellule oldCellule = tab[cellule.l][cellule.c];
+		oldCellule.merge(cellule);
+	}
 
 }
