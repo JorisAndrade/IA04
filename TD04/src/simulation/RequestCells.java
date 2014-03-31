@@ -14,11 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SuppressWarnings("serial")
 public class RequestCells extends TickerBehaviour {
 
+	private final ObjectMapper mapper = new ObjectMapper();
+
 	public RequestCells(Agent a, long period) {
 		super(a, period);
 	}
-
-	private final ObjectMapper mapper = new ObjectMapper();
 
 	@Override
 	protected void onTick() {

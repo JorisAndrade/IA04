@@ -21,7 +21,6 @@ public class RequestAnalyse extends CyclicBehaviour {
 				MessageTemplate.MatchPerformative(ACLMessage.INFORM),
 				MessageTemplate.MatchConversationId("1"));
 		ACLMessage response = myAgent.receive(template);
-		System.out.println("Wait for message");
 		if (response != null) {
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 

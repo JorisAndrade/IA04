@@ -9,21 +9,22 @@ import utils.Cellule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SuppressWarnings("serial")
-public class UpdateCellsBehaviour extends CyclicBehaviour{
+public class UpdateCellsBehaviour extends CyclicBehaviour {
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private final ObjectMapper mapper = new ObjectMapper();
 
 	@Override
 	public void action() {
-		MessageTemplate template = MessageTemplate.and(MessageTemplate
-				.MatchPerformative(ACLMessage.REQUEST), MessageTemplate
-				.MatchConversationId("2"));
+		MessageTemplate template = MessageTemplate.and(
+				MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+				MessageTemplate.MatchConversationId("2"));
 		ACLMessage message = myAgent.receive(template);
-		if(message!=null){
+		if (message != null) {
 			try {
-				CellsMessage requestMessage = mapper.readValue(message.getContent(), CellsMessage.class);
+				CellsMessage requestMessage = mapper.readValue(
+						message.getContent(), CellsMessage.class);
 				Cellule[] updateCells = requestMessage.getCells();
-				for(Cellule c : updateCells) {
+				for (Cellule c : updateCells) {
 					EnvironnementAgent.sudoku.setCellule(c);
 				}
 			} catch (Exception e) {
@@ -31,7 +32,5 @@ public class UpdateCellsBehaviour extends CyclicBehaviour{
 			}
 		}
 	}
-
-
 
 }
