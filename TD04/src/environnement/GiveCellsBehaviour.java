@@ -14,25 +14,26 @@ import utils.RequestCellsMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SuppressWarnings("serial")
-public class GiveCellsBehaviour extends CyclicBehaviour{
+public class GiveCellsBehaviour extends CyclicBehaviour {
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private final ObjectMapper mapper = new ObjectMapper();
 
-	
 	@Override
 	public void action() {
-		// TODO Auto-generated method stub
-		ACLMessage message = myAgent.receive(MessageTemplate
-				.MatchPerformative(ACLMessage.REQUEST));
+		MessageTemplate template = MessageTemplate.and(
+				MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
+				MessageTemplate.MatchConversationId("1"));
+		ACLMessage message = myAgent.receive(template);
 
-		System.out.println("W8ing for message");
 		if (message != null) {
-			System.out.println("Message Received");
 			try {
-				RequestCellsMessage requestMessage = mapper.readValue(message.getContent(), RequestCellsMessage.class);
-				Cellule[] cellules = EnvironnementAgent.sudoku.getCellulesForRank(requestMessage.getRank());
-				System.out.println("cellules récupérées" + cellules);
-				CellsMessage cellsMessage = new CellsMessage(cellules);
+				RequestCellsMessage requestMessage = mapper.readValue(
+						message.getContent(), RequestCellsMessage.class);
+				Cellule[] cellules = EnvironnementAgent.sudoku
+						.getCellulesForRank(requestMessage.getRank());
+				System.out.println("cellules recuperees" + cellules);
+				CellsMessage cellsMessage = new CellsMessage(cellules,
+						requestMessage.getRank());
 				StringWriter stringWriter = new StringWriter();
 				try {
 					mapper.writeValue(stringWriter, cellsMessage);
@@ -41,22 +42,22 @@ public class GiveCellsBehaviour extends CyclicBehaviour{
 					e.printStackTrace();
 				}
 				String messageString = stringWriter.toString();
-				System.out.println("message envoyé: " + messageString);
+				System.out.println("message envoye: " + messageString);
 				if (messageString != null) {
 					ACLMessage response = new ACLMessage(ACLMessage.INFORM);
 					response.setContent(messageString);
-					response.addReceiver(new AID("AgentSimulation", AID.ISLOCALNAME));
+					response.setConversationId("1");
+					response.addReceiver(new AID("AgentSimulation",
+							AID.ISLOCALNAME));
 					myAgent.send(response);
-					System.out.println("Message sent");
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		} else {
 			block();
 		}
 	}
-
 }

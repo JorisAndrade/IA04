@@ -10,8 +10,10 @@ public class SimulationAgent extends Agent {
 	@Override
 	protected void setup() {
 		super.setup();
+
 		addBehaviour(new InitializationBehaviour());
-		addBehaviour(new WorkerBehaviour(this, 1000));
+		addBehaviour(new RequestCells(this, 10000));
+		addBehaviour(new RequestAnalyse());
 		addBehaviour(new UpdateBehaviour());
 	}
 }

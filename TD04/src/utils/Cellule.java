@@ -2,12 +2,51 @@ package utils;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({ "binaryPossibles" })
 public class Cellule {
 
 	protected int mValeur;
 	protected ArrayList<Integer> mValeursPossibles = new ArrayList<Integer>();
 	protected int l;
 	protected int c;
+
+	public int getmValeur() {
+		return mValeur;
+	}
+
+	public void setmValeur(int mValeur) {
+		this.mValeur = mValeur;
+	}
+
+	public ArrayList<Integer> getmValeursPossibles() {
+		return mValeursPossibles;
+	}
+
+	public void setmValeursPossibles(ArrayList<Integer> mValeursPossibles) {
+		this.mValeursPossibles = mValeursPossibles;
+	}
+
+	public int getL() {
+		return l;
+	}
+
+	public void setL(int l) {
+		this.l = l;
+	}
+
+	public int getC() {
+		return c;
+	}
+
+	public void setC(int c) {
+		this.c = c;
+	}
+
+	public Cellule() {
+
+	}
 
 	public Cellule(int v, int l, int c) {
 		mValeur = v;
