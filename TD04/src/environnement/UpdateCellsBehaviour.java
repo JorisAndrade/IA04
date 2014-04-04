@@ -5,6 +5,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import utils.CellsMessage;
 import utils.Cellule;
+import utils.Sudoku;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,6 +27,7 @@ public class UpdateCellsBehaviour extends CyclicBehaviour {
 				Cellule[] updateCells = requestMessage.getCells();
 				for (Cellule c : updateCells) {
 					EnvironnementAgent.sudoku.setCellule(c);
+
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -23,6 +23,13 @@ public class RequestCells extends TickerBehaviour {
 	@Override
 	protected void onTick() {
 		AID[] agents = ((SimulationAgent) myAgent).agents;
+		
+		ACLMessage messageDone = new ACLMessage(ACLMessage.REQUEST);
+		messageDone.setConversationId("4");
+		messageDone.addReceiver(new AID("AgentEnvironnement",
+				AID.ISLOCALNAME));
+		myAgent.send(messageDone);
+		
 		for (int i = 0; i < agents.length; i++) {
 			RequestCellsMessage requestMessage = new RequestCellsMessage(i);
 			StringWriter stringWriter = new StringWriter();

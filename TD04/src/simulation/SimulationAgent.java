@@ -12,7 +12,7 @@ public class SimulationAgent extends Agent {
 		super.setup();
 
 		addBehaviour(new InitializationBehaviour());
-		addBehaviour(new RequestCells(this, 10000));
+		addBehaviour(new RequestCells(this, 1000));
 		addBehaviour(new RequestAnalyse());
 		addBehaviour(new UpdateBehaviour());
 	}
