@@ -1,0 +1,8 @@
+SELECT distinct ?concept
+WHERE
+{
+	?concept a <http://www.w3.org/2002/07/owl#Class> .
+	?relation1 <http://www.w3.org/2000/01/rdf-schema#domain> ?concept .
+	?relation2 <http://www.w3.org/2000/01/rdf-schema#domain> ?concept .
+	FILTER(?relation1 != ?relation2)
+}
