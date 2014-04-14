@@ -1,0 +1,38 @@
+@prefix td5:    <http://xmlns.com/td5/0.1/> .
+@prefix dc:      <http://purl.org/dc/elements/1.1/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix wot:     <http://xmlns.com/wot/0.1/> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix vs:      <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+
+td5:claude rdf:type foaf:Person;
+	foaf:firstname "Claude";
+	foaf:birthday "01-01-60";
+	foaf:topic_interest "http://dbpedia.org/page/Cuisine";
+	foaf:knows td5:claudine.
+
+td5:claudine rdf:type foaf:Person;
+	foaf:firstname "Claudine";
+	foaf:birthday "05-10-80";
+	foaf:topic_interest "http://dbpedia.org/page/Football";
+	foaf:knows td5:claude, td5:paul.
+	
+td5:paul rdf:type foaf:Person;
+	foaf:firstname "Paul";
+	foaf:birthday "07-08-91";
+	foaf:topic_interest "http://dbpedia.org/page/Paris";
+	foaf:knows td5:claudine.
+	
+td5:elisa rdf:type foaf:Person;
+	foaf:firstname "Elisa";
+	foaf:birthday "10-10-92";
+	foaf:topic_interest "http://dbpedia.org/page/Food";
+	foaf:knows td5:brad.
+
+td5:brad rdf:type foaf:Person;
+	foaf:firstname "Brad";
+	foaf:birthday "19-12-91";
+	foaf:topic_interest "http://dbpedia.org/page/Drink";
+	foaf:knows td5:elisa.
