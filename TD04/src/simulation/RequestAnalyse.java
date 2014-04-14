@@ -31,8 +31,6 @@ public class RequestAnalyse extends CyclicBehaviour {
 				int rank = requestMessage.getRank();
 				message.setContent(response.getContent());
 				message.addReceiver(((SimulationAgent) myAgent).agents[rank]);
-				System.out.println("Sending : " + response.getContent()
-						+ "to agent " + rank);
 				myAgent.send(message);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
