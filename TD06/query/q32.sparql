@@ -1,0 +1,10 @@
+PREFIX foaf: 	<http://xmlns.com/foaf/0.1/>
+PREFIX td5:  	<http://xmlns.com/td5/0.1/>
+PREFIX geo:		<http://linkedgeodata.org/triplify/>
+PREFIX dbpedia: <http://dbpedia.org/page/>
+ 
+SELECT distinct ?person
+WHERE { 
+	td5:claude foaf:topic_interest ?country.
+	?person foaf:topic_interest ?country.
+}

@@ -13,7 +13,7 @@ td5:claude rdf:type foaf:Person;
 	foaf:firstname "Claude";
 	foaf:birthday "01-01-60";
 	foaf:topic_interest dbpedia:Cuisine;
-	foaf:topic_interest  geo:node424311942;
+	foaf:topic_interest geo:node148332300;
 	foaf:knows td5:claudine.
 
 td5:claudine rdf:type foaf:Person;
