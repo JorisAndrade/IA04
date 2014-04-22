@@ -10,7 +10,7 @@ public class EnvironnementAgent extends Agent {
 
 	public EnvironnementAgent() {
 		super.setup();
-		sudoku = new Sudoku("examples/grille3.txt");
+		sudoku = new Sudoku("examples/grille6.txt");
 		this.addBehaviour(new DoneBehaviour());
 		this.addBehaviour(new GiveCellsBehaviour());
 		this.addBehaviour(new UpdateCellsBehaviour());

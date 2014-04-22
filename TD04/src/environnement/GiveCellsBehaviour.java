@@ -6,6 +6,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 import java.io.StringWriter;
+import java.util.List;
 
 import utils.CellsMessage;
 import utils.Cellule;
@@ -29,7 +30,7 @@ public class GiveCellsBehaviour extends CyclicBehaviour {
 			try {
 				RequestCellsMessage requestMessage = mapper.readValue(
 						message.getContent(), RequestCellsMessage.class);
-				Cellule[] cellules = EnvironnementAgent.sudoku
+				List<Cellule> cellules = EnvironnementAgent.sudoku
 						.getCellulesForRank(requestMessage.getRank());
 				CellsMessage cellsMessage = new CellsMessage(cellules,
 						requestMessage.getRank());

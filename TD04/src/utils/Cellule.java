@@ -3,15 +3,18 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties({ "binaryPossibles" })
 public class Cellule {
 
-	protected int mValeur;
-	protected ArrayList<Integer> mValeursPossibles = new ArrayList<Integer>();
-	protected int l;
-	protected int c;
+	private int mValeur;
+	private List<Integer> mValeursPossibles;
+	private int l;
+	private int c;
 
 	public int getmValeur() {
 		return mValeur;
@@ -21,12 +24,14 @@ public class Cellule {
 		this.mValeur = mValeur;
 	}
 
-	public ArrayList<Integer> getmValeursPossibles() {
+	public List<Integer> getmValeursPossibles() {
 		return mValeursPossibles;
 	}
 
-	public void setmValeursPossibles(ArrayList<Integer> mValeursPossibles) {
-		this.mValeursPossibles = mValeursPossibles;
+	public void setmValeursPossibles(List<Integer> mValeursPossibles) {
+		for(int i = 0; i<mValeursPossibles.size(); i++){
+			this.mValeursPossibles.add(mValeursPossibles.get(i).intValue());
+		}
 	}
 
 	public int getL() {
@@ -46,10 +51,20 @@ public class Cellule {
 	}
 
 	public Cellule() {
-
+		mValeursPossibles = new ArrayList<Integer>();
 	}
-
+	@JsonCreator
+	public Cellule(@JsonProperty("mValeur") int v,@JsonProperty("l") int l ,@JsonProperty("c") int c,@JsonProperty("mValeursPossibles") int possibles[]){
+		this.mValeursPossibles = new ArrayList<Integer>();
+		this.mValeur = v;
+		this.c = c;
+		this.l = l;
+		for(int i = 0; i< possibles.length; i++){
+			this.mValeursPossibles.add(possibles[i]);
+		}
+	}
 	public Cellule(int v, int l, int c) {
+		mValeursPossibles = new ArrayList<Integer>();
 		mValeur = v;
 		this.l = l;
 		this.c = c;
@@ -62,6 +77,7 @@ public class Cellule {
 
 	public synchronized void removeValsPossibles(List<Integer> vals) {
 		mValeursPossibles.removeAll(vals);
+
 	}
 
 	public synchronized boolean valIsPossible(int val) {
@@ -79,16 +95,16 @@ public class Cellule {
 	public int numberOfPossible() {
 		return mValeursPossibles.size();
 	}
-
+	@JsonIgnore
 	public void setVal(int val) {
 		mValeur = val;
 		mValeursPossibles.clear();
 	}
-
+	@JsonIgnore
 	public int getVal() {
 		return mValeur;
 	}
-
+	
 	public void setValWithLastValPossible() throws Exception {
 		if (mValeursPossibles.size() != 1) {
 			throw new Exception("mValeursPossibles.size() == "
@@ -99,19 +115,25 @@ public class Cellule {
 
 	@Override
 	public String toString() {
-		return "Cellule [mValeur=" + mValeur + ", l=" + l + ", c=" + c + "]";
+		String result =  " V" + mValeur + " p=";
+		for(Integer i : mValeursPossibles){
+			result+=i;
+		}
+		return result;
 	}
 	
 	public void merge(Cellule cellule){
-		if(cellule.numberOfPossible()==0){
-			this.setVal(cellule.getVal());
-		} else {
-			List<Integer> notPossible = new ArrayList<Integer>();
-			for(int i = 0; i<9; i++){
-				notPossible.add(i);
+		if(this.mValeur == 0){
+			if(cellule.numberOfPossible()==0){
+				this.setVal(cellule.getVal());
+			} else {
+				List<Integer> notPossible = new ArrayList<Integer>();
+				for(int i = 1; i<=9; i++){
+					notPossible.add(i);
+				}
+				notPossible.removeAll(cellule.mValeursPossibles);
+				this.removeValsPossibles(notPossible);
 			}
-			notPossible.removeAll(cellule.mValeursPossibles);
-			this.removeValsPossibles(notPossible);
 		}
 	}
 }

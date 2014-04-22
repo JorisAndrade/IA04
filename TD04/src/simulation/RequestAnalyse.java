@@ -24,7 +24,7 @@ public class RequestAnalyse extends CyclicBehaviour {
 		if (response != null) {
 			ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 
-			CellsMessage requestMessage;
+			CellsMessage requestMessage = null;
 			try {
 				requestMessage = mapper.readValue(response.getContent(),
 						CellsMessage.class);
@@ -33,7 +33,6 @@ public class RequestAnalyse extends CyclicBehaviour {
 				message.addReceiver(((SimulationAgent) myAgent).agents[rank]);
 				myAgent.send(message);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

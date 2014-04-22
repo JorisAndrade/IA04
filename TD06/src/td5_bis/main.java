@@ -25,6 +25,14 @@ public class main {
 			ac = mc.createNewAgent("KBAgent", "td5_bis.KBAgent",
 					new Object[] { 4 });
 			ac.start();
+			
+			ac = mc.createNewAgent("GeodataAgent", "td5_bis.GeodataAgent",
+					new Object[] { 4 });
+			ac.start();
+			
+			ac = mc.createNewAgent("PropagateGeoAgent",
+					"td5_bis.PropagateGeoAgent", new Object[] { 4 });
+			ac.start();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

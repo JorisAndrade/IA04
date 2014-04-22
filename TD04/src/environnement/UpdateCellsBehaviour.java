@@ -3,9 +3,11 @@ package environnement;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+
+import java.util.List;
+
 import utils.CellsMessage;
 import utils.Cellule;
-import utils.Sudoku;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,7 +26,7 @@ public class UpdateCellsBehaviour extends CyclicBehaviour {
 			try {
 				CellsMessage requestMessage = mapper.readValue(
 						message.getContent(), CellsMessage.class);
-				Cellule[] updateCells = requestMessage.getCells();
+				List<Cellule> updateCells = requestMessage.getCells();
 				for (Cellule c : updateCells) {
 					EnvironnementAgent.sudoku.setCellule(c);
 
@@ -32,6 +34,8 @@ public class UpdateCellsBehaviour extends CyclicBehaviour {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			EnvironnementAgent.sudoku.afficherTabMore();
+			System.out.println("\n\n");
 		}
 	}
 

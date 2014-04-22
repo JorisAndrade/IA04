@@ -11,7 +11,7 @@ import java.io.StringWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SuppressWarnings("serial")
-public class PropagateSparql extends Agent {
+public class PropagateGeoAgent extends Agent {
 	ObjectMapper mapper = new ObjectMapper();
 	@Override
 	protected void setup() {
@@ -34,7 +34,7 @@ public class PropagateSparql extends Agent {
 					}
 					String messageString = stringWriter.toString();
 					message.setContent(messageString);
-					message.addReceiver(new AID("KBAgent", AID.ISLOCALNAME));
+					message.addReceiver(new AID("GeodataAgent", AID.ISLOCALNAME));
 					myAgent.send(message);
 				}
 			}

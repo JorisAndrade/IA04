@@ -7,6 +7,7 @@ import jade.lang.acl.MessageTemplate;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import utils.CellsMessage;
@@ -17,68 +18,84 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SuppressWarnings("serial")
 public class ResolutionBehaviour extends CyclicBehaviour {
 
-	private final ObjectMapper mapper = new ObjectMapper();
-
+	private ObjectMapper mapper;
+	private List<Cellule> cells;
 	@Override
 	public void action() {
 		ACLMessage message = myAgent.receive(MessageTemplate
 				.MatchPerformative(ACLMessage.REQUEST));
 		if (message != null) {
+			mapper = new ObjectMapper();
 			CellsMessage requestMessage;
 			try {
 				requestMessage = mapper.readValue(message.getContent(),
 						CellsMessage.class);
-				Cellule[] analyseCells = requestMessage.getCells();
-				// Regle 1
-				for (int i = 0; i < 9; i++) {
-					Cellule cellule = analyseCells[i];
-					if (cellule.numberOfPossible() == 1) {
-						cellule.setValWithLastValPossible();
-					}
-				}
-				// Regle 2
-				for (int i = 1; i <= 10; i++) {
-					int count = 0;
-					Cellule present = null;
-					for (int j = 0; j < 9; j++) {
-						if (analyseCells[j].valIsPossible(j)) {
-							count++;
-							present = analyseCells[j];
+				cells = requestMessage.getCells();
+				cleanRank();
+				//Regle 1
+				for (Cellule c : cells){
+					if (c.getVal() == 0 && c.numberOfPossible() == 1){
+						try {
+							c.setValWithLastValPossible();
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
 					}
-					if (count == 1) {
-						present.setVal(i);
+				}
+				
+				//Regle 2
+				for (int i=1; i<10; ++i){
+					Cellule cc = null;
+					for (Cellule c : cells){
+						if (c.getVal() == i){
+							cc = null;
+							break;
+						}
+						else if (c.getVal() == 0 && c.valIsPossible(i)) {
+							if (cc == null){
+								cc = c;
+							}
+							else {
+								cc = null;
+								break;
+							}
+						}
+					}
+					if (cc != null){
+						cc.setVal(i);
 					}
 				}
-				// Regle 3
-				// pour chaque cellule
-				for (int i = 1; i < 9; i++) {
-					// si on a uniquement 2 chiffres
-					if (analyseCells[i].numberOfPossible() == 2) {
-						// on cherche les 2 memes chiffres ailleurs
-						for (int j = i + 1; j < 9; j++) {
-							if (analyseCells[j].numberOfPossible() == 2
-									&& analyseCells[j].getBinaryPossibles() == analyseCells[i]
-											.getBinaryPossibles()) {
-								// et on les retire des autres cellules
-								for (int k = 0; k < 9; k++) {
-									List<Integer> removeList = new ArrayList<Integer>();
-									removeList.add(i);
-									removeList.add(j);
-									if (k != j && k != i) {
-										analyseCells[k]
-												.removeValsPossibles(removeList);
-									}
+				
+				//Regle 3
+				for (Cellule cell : cells) {
+					// on récupère les cellules à 2 elements
+					if (cell.getVal() == 0 && cell.numberOfPossible() == 2){
+						Cellule cc = null;
+						int b = cell.getBinaryPossibles();
+						// on en cherche une avec les même caleurs
+						for (Cellule c : cells){
+							if (cell != c && c.getBinaryPossibles() == b) {
+									cc = c;
+							}
+						}
+						//on retire ces valeurs aux autres cellules 
+						if (cc != null){
+							ArrayList<Integer> valsToRemove = new ArrayList<Integer>(cell.getmValeursPossibles());
+							for (Cellule c : cells){
+								if (c != cell && c != cc){
+									c.removeValsPossibles(valsToRemove);
 								}
 							}
 						}
 					}
 				}
+				cleanRank();
+				
+				
 				StringWriter stringWriter = new StringWriter();
 				try {
 					mapper.writeValue(stringWriter, requestMessage);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				String messageString = stringWriter.toString();
@@ -97,5 +114,17 @@ public class ResolutionBehaviour extends CyclicBehaviour {
 			}
 		}
 	}
-
+	
+	private void cleanRank(){
+		ArrayList<Integer> vals = new ArrayList<Integer>();
+		for (Cellule c : cells){
+			if (c.getVal() != 0){
+				vals.add(c.getVal());
+			}
+		}
+		for (Cellule c : cells){
+			c.removeValsPossibles(vals);
+		}
+	}
+	
 }

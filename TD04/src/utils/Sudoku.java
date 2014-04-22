@@ -2,6 +2,8 @@ package utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Sudoku {
@@ -52,26 +54,26 @@ public class Sudoku {
 		}
 	}
 
-	public Cellule[] getCellulesForRank(int r) {
-		Cellule[] c = null;
+	public List<Cellule> getCellulesForRank(int r) {
+		List<Cellule> c = new ArrayList<Cellule>();
 		// O..8 lignes
 		if (0 <= r && r < 9) {
-			c = tab[r];
+			for(int i = 0; i<9; i++){
+				c.add(tab[r][i]);
+			}
 		}
 		// 9..17 colonnes
 		else if (9 <= r && r < 18) {
-			c = new Cellule[9];
 			for (int i = 0; i < 9; ++i) {
-				c[i] = tab[i][r - 9];
+				c.add(tab[i][r - 9]);
 			}
 		}
 		// 18..26 carrés
 		else {
-			c = new Cellule[9];
 			int r0 = r - 18;
 			for (int a = 0; a < 3; ++a) {
 				for (int b = 0; b < 3; ++b) {
-					c[a + b * 3] = tab[r0 / 3 * 3 + a][r0 % 3 * 3 + b];
+					c.add(tab[r0 / 3 * 3 + a][r0 % 3 * 3 + b]);
 				}
 			}
 		}
@@ -81,7 +83,7 @@ public class Sudoku {
 	public boolean isDone() {
 		for (Cellule[] cells : tab) {
 			for (Cellule c : cells) {
-				if (c.mValeur == 0) {
+				if (c.getmValeur() == 0) {
 					return false;
 				}
 
@@ -90,8 +92,8 @@ public class Sudoku {
 		return true;
 	}
 	
-	public void setCellule(Cellule cellule){
-		Cellule oldCellule = tab[cellule.l][cellule.c];
+	synchronized public void setCellule(Cellule cellule) {
+		Cellule oldCellule = tab[cellule.getL()][cellule.getC()];
 		oldCellule.merge(cellule);
 	}
 
